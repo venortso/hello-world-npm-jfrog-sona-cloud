@@ -11,3 +11,5 @@ app.listen(port, () => {
 })
 
 const randomShit = 0;
+
+const key = "//envorso.jfrog.io/artifactory/api/npm/hello-world-sonar-npm/:_auth=dml0by5sdW9uZ0BlbnZvcnNvLmNvbTpjbVZtZEd0dU9qQXhPakUzTWpZd01EUTFOREE2ZGpnNVVtNXdTRXBGTjJkVVlqQktaRVoxYWxaR01sZG1hVFJh";
