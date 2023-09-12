@@ -35,16 +35,13 @@ jobs:
          uses: actions/setup-node@v3
            
        - name: Set CLI Config
-         run: jf npm-config --global=true --repo-resolve=vito-prebuilt-test-npm --repo-deploy=vito-prebuilt-test-npm
+         run: jf npm-config --global=true --repo-resolve=venortso-npm-challenge-remote --repo-deploy=venortso-npm-challenge-local
            
        - name: Install Deps
-         run: jf npm install
-           
-      #  - name: Run tests
-      #    run: npm test
+         run: jf npm install --build-name=venortso-npm-challenge --build-number=1.0.3
          
        - name: Publish
-         run: jf npm publish
+         run: jf npm publish --build-name=venortso-npm-challenge --build-number=1.0.3
          
        - name: Publish Build info With JFrog CLI
          run: |
