@@ -17,5 +17,6 @@
     {"registry":"https://envorso.jfrog.io/artifactory/api/npm/vito_test/"},
   "custom": {
     "test_metadata": "test_metadata_value"
-  } 
+  } ,
+  "customMetadata": "customMetadataValue"
 }
