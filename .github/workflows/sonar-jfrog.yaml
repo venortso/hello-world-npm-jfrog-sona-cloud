@@ -41,4 +41,4 @@ jobs:
          run: jf npm install --build-name=venortso-npm-challenge --build-number=1.0.3
          
        - name: Get Build Info from Sonar and Publish
-         run: bash .github/workflows/sonar-jfrog.sh
+         run: bash .github/workflows/tesh.sh
