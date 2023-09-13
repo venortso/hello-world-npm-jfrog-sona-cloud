@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export CI_BUILD_NAME="github-action-venortso"
 export CI_BUILD_NUM="1.0.0"
 
