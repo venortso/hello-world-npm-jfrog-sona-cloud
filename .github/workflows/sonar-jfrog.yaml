@@ -20,25 +20,43 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   jfrog:
-     runs-on: ubuntu-latest
-     steps:
-       - name: Checkout
-         uses: actions/checkout@v3
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          # JFrog platform url (for example: https://acme.jfrog.io)
+          JF_URL: ${{ secrets.JF_URL }}
+
+          # JFrog Platform access token
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          run: |
+            jf rt ping
+
+      - name: Setup Node npm
+        uses: actions/setup-node@v3
+           
+      - name: Set CLI Config
+        run: jf npm-config --global=true --repo-resolve=test-npm --repo-deploy=tes1-npm
+           
+      - name: Install Deps
+        run: jf npm install --build-name=venortso-bootstrap --build-number=2.0.0
+           
+      - name: Run tests
+        run: npm test
          
-       - name: Setup JFrog CLI
-         uses: jfrog/setup-jfrog-cli@v3
-         env:  
-           JF_URL: ${{ secrets.JF_URL }}
-           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-           
-       - name: Setup Node npm
-         uses: actions/setup-node@v3
-           
-       - name: Set CLI Config
-         run: jf npm-config --global=true --repo-resolve=venortso-npm-challenge-remote --repo-deploy=venortso-npm-challenge-local
-           
-       - name: Install Deps
-         run: jf npm install --build-name=venortso-npm-challenge --build-number=1.0.3
+      - name: Publish
+        run: jf npm publish
          
-       - name: Get Build Info from Sonar and Publish
-         run: bash .github/workflows/test.sh
+      - name: Publish Build info With JFrog CLI
+        run: |
+          # Collect environment variables for the build
+          jf rt build-collect-env
+          # Collect VCS details from git and add them to the build
+          jf rt build-add-git
+          # Publish build info
+          jf rt build-publish
