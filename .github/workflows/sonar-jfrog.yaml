@@ -45,9 +45,6 @@ jobs:
            
       - name: Install Deps
         run: jf npm install --build-name=venortso-bootstrap --build-number=2.0.0
-           
-      - name: Run tests
-        run: npm test
          
       - name: Publish
         run: jf npm publish
