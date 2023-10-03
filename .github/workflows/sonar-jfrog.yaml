@@ -1,59 +1,59 @@
-name: Build
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
-jobs:
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+# name: Build
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+# jobs:
+#   sonarcloud:
+#     name: SonarCloud
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+#       - name: SonarCloud Scan
+#         uses: SonarSource/sonarcloud-github-action@master
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  jfrog:
-    runs-on: ubuntu-latest
+#   jfrog:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v3
-        env:
-          # JFrog platform url (for example: https://acme.jfrog.io)
-          JF_URL: ${{ secrets.JF_URL }}
+#       - name: Setup JFrog CLI
+#         uses: jfrog/setup-jfrog-cli@v3
+#         env:
+#           # JFrog platform url (for example: https://acme.jfrog.io)
+#           JF_URL: ${{ secrets.JF_URL }}
 
-          # JFrog Platform access token
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          run: |
-            jf rt ping
+#           # JFrog Platform access token
+#           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+#           run: |
+#             jf rt ping
 
-      - name: Setup Node npm
-        uses: actions/setup-node@v3
+#       - name: Setup Node npm
+#         uses: actions/setup-node@v3
            
-      - name: Set CLI Config
-        run: jf npm-config --global=true --repo-resolve=test-npm --repo-deploy=tes1-npm
+#       - name: Set CLI Config
+#         run: jf npm-config --global=true --repo-resolve=test-npm --repo-deploy=tes1-npm
            
-      - name: Install Deps
-        run: jf npm install --build-name=venortso-bootstrap --build-number=2.0.0
+#       - name: Install Deps
+#         run: jf npm install --build-name=venortso-bootstrap --build-number=2.0.0
          
-      - name: Publish
-        run: jf npm publish
+#       - name: Publish
+#         run: jf npm publish
          
-      - name: Publish Build info With JFrog CLI
-        run: |
-          # Collect environment variables for the build
-          jf rt build-collect-env
-          # Collect VCS details from git and add them to the build
-          jf rt build-add-git
-          # Publish build info
-          jf rt build-publish
+#       - name: Publish Build info With JFrog CLI
+#         run: |
+#           # Collect environment variables for the build
+#           jf rt build-collect-env
+#           # Collect VCS details from git and add them to the build
+#           jf rt build-add-git
+#           # Publish build info
+#           jf rt build-publish
